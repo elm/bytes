@@ -4,7 +4,10 @@ Work with densely packed sequences of bytes.
 
 The goal of this package is to support **network protocols** such as ProtoBuf. Or to put it another way, the goal is to have `elm/http` and `elm/websocket` send fewer bytes over the wire.
 
-The motivation for this is outlined in [**A vision for data interchange in Elm**](https://gist.github.com/evancz/1c5f2cf34939336ecb79b97bb89d9da6). Please read it!
+
+## Motivation = [A vision for data interchange in Elm](https://gist.github.com/evancz/1c5f2cf34939336ecb79b97bb89d9da6)
+
+Please read it!
 
 
 ## Example
@@ -41,6 +44,6 @@ pointDecoder =
     (Decode.float32 BE)
 ```
 
-Again, rather than writing this by hand in client or sever code, the hope is that someone will work on a system that compiles `.proto` files into `.elm` files.
+Rather than writing this by hand in client or sever code, the hope is that someone things like ProtoBuf compilers for Elm.
 
-The overall plan is described in [**A vision for data interchange in Elm**](https://gist.github.com/evancz/1c5f2cf34939336ecb79b97bb89d9da6)!
+Again, the overall plan is described in [**A vision for data interchange in Elm**](https://gist.github.com/evancz/1c5f2cf34939336ecb79b97bb89d9da6)!
