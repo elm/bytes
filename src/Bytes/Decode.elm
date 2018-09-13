@@ -3,7 +3,7 @@ module Bytes.Decode exposing
   , signedInt8, signedInt16, signedInt32
   , unsignedInt8, unsignedInt16, unsignedInt32
   , float32, float64
-  , string, char
+  , string
   , bytes
   , map, map2, map3, map4, map5
   , andThen, succeed, fail
@@ -25,9 +25,6 @@ module Bytes.Decode exposing
 
 # Bytes
 @docs bytes
-
-# Characters
-@docs char
 
 # Strings
 @docs string
@@ -149,17 +146,6 @@ float64 endianness =
 bytes : Int -> Decoder Bytes
 bytes n =
   Decoder (Elm.Kernel.Bytes.read_bytes n)
-
-
-
--- CHARACTERS
-
-
-{-| Decode a single UTF-8 encoded character.
--}
-char : Decoder Char
-char =
-  Decoder Elm.Kernel.Bytes.read_char
 
 
 

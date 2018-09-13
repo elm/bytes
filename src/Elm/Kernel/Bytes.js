@@ -187,34 +187,4 @@ var _Bytes_read_string = F2(function(bytes, offset)
 	return __Utils_Tuple2(offset, string);
 });
 
-var _Bytes_read_char = F2(function(bytes, offset)
-{
-	var char =
-		(word < 128)
-			? String.fromCharCode(word)
-			:
-		(word & 0b11100000 == 0b11000000)
-			? String.fromCharCode(
-				(word & 0b00011111) << 6
-				| bytes.getUint8(++offset) & 0b00111111
-			)
-			:
-		(word & 0b11110000 == 0b11100000)
-			? String.fromCharCode(
-				(word & 0b00001111) << 12
-				| (bytes.getUint8(++offset) & 0b00111111) << 6
-				| bytes.getUint8(++offset) & 0b00111111
-			)
-			:
-			(word =
-				((word & 0b00000111) << 18
-					| (bytes.getUint8(++offset) & 0b00111111) << 12
-					| (bytes.getUint8(++offset) & 0b00111111) << 6
-					| bytes.getUint8(++offset) & 0b00111111
-				) - 0x10000
-			, String.fromCharCode(Math.floor(word / 0x400) + 0xD800, word % 0x400 + 0xDC00)
-			);
-	return __Utils_Tuple2(offset + 1, __Utils_chr(char));
-});
-
 var _Bytes_decodeFailure = F2(function() { throw 0; });

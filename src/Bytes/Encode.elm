@@ -5,7 +5,6 @@ module Bytes.Encode exposing
   , unsignedInt8, unsignedInt16, unsignedInt32
   , float32, float64
   , bytes
-  , char, getCharWidth
   , string, getStringWidth
   , sequence
   )
@@ -25,9 +24,6 @@ module Bytes.Encode exposing
 
 # Bytes
 @docs bytes
-
-# Characters
-@docs char, getCharWidth
 
 # Strings
 @docs string, getStringWidth
@@ -56,9 +52,8 @@ type Encoder
   | U32 Endianness Int
   | F32 Endianness Float
   | F64 Endianness Float
-  | Sequence Int (List Encoder)
-  | StringUtf8 Int String
-  | CharUtf8 Int Char
+  | Seq Int (List Encoder)
+  | Utf8 Int String
   | Bytes Bytes
 
 
@@ -197,40 +192,6 @@ bytes =
 
 
 
--- CHARACTERS
-
-
-{-| Encode a `Char` as UTF-8 bytes.
-
-    encode (char 'a') -- <61>
-    encode (char 'b') -- <62>
-    encode (char 'ø') -- <C3B8>
-    encode (char '™') -- <E284A2>
-
-Notice that different characters result in different numbers of bytes. This
-means that latin text can be quite dense, and it is possible to represent lots
-of other characters. Read more about [UTF-8](https://en.wikipedia.org/wiki/UTF-8)
-to learn exactly how this encoding works!
--}
-char : Char -> Encoder
-char chr =
-  CharUtf8 (Elm.Kernel.Bytes.getStringWidth chr) chr
-
-
-{-| Get the width of a `Char` in UTF-8 bytes.
-
-    getCharWidth 'a' == 1
-    getCharWidth 'b' == 1
-    getCharWidth 'ø' == 2
-    getCharWidth '™' == 3
-
--}
-getCharWidth : Char -> Int
-getCharWidth =
-  Elm.Kernel.Bytes.getStringWidth
-
-
-
 -- STRINGS
 
 
@@ -270,7 +231,7 @@ to make negative numbers small.
 -}
 string : String -> Encoder
 string str =
-  StringUtf8 (Elm.Kernel.Bytes.getStringWidth str) str
+  Utf8 (Elm.Kernel.Bytes.getStringWidth str) str
 
 
 {-| Get the width of a `String` in UTF-8 bytes.
@@ -314,7 +275,7 @@ values for the position of a ball in 3D space, you could say:
 -}
 sequence : List Encoder -> Encoder
 sequence builders =
-  Sequence (getWidths 0 builders) builders
+  Seq (getWidths 0 builders) builders
 
 
 
@@ -332,9 +293,8 @@ write builder mb offset =
     U32 e n -> Elm.Kernel.Bytes.write_u32 mb offset n (e == LE)
     F32 e n -> Elm.Kernel.Bytes.write_f32 mb offset n (e == LE)
     F64 e n -> Elm.Kernel.Bytes.write_f64 mb offset n (e == LE)
-    Sequence _ bs -> writeSequence bs mb offset
-    StringUtf8 _ s -> Elm.Kernel.Bytes.write_string mb offset s
-    CharUtf8 _ c -> Elm.Kernel.Bytes.write_string mb offset c
+    Seq _ bs -> writeSequence bs mb offset
+    Utf8 _ s -> Elm.Kernel.Bytes.write_string mb offset s
     Bytes bs -> Elm.Kernel.Bytes.write_bytes mb offset bs
 
 
@@ -363,9 +323,8 @@ getWidth builder =
     U32 _ _ -> 4
     F32 _ _ -> 4
     F64 _ _ -> 8
-    Sequence w _ -> w
-    StringUtf8 w _ -> w
-    CharUtf8 w _ -> w
+    Seq w _ -> w
+    Utf8 w _ -> w
     Bytes bs -> Elm.Kernel.Bytes.length bytes
 
 
