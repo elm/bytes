@@ -47,3 +47,10 @@ pointDecoder =
 Rather than writing this by hand in client or sever code, the hope is that someone things like ProtoBuf compilers for Elm.
 
 Again, the overall plan is described in [**A vision for data interchange in Elm**](https://gist.github.com/evancz/1c5f2cf34939336ecb79b97bb89d9da6)!
+
+
+## Scope
+
+**This API is not intended to work like `Int8Array` or `Uint16Array` in JavaScript.** If you have a concrete scenario in which you want to interpret bytes as densely packed arrays of integers or floats, please describe it on [https://discourse.elm-lang.org/](https://discourse.elm-lang.org/) in a friendly and high-level way. What is the project about? What do densely packed arrays do for that project? Is it about perf? What kind of algorithms are you using? Etc.
+
+If some scenarios require the mutation of entries in place, special care will be required in designing a nice API. All values in Elm are immutable, so the particular API that works well for us will probably depend a lot on the particulars of what folks are trying to do.
