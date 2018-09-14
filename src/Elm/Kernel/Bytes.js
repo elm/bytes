@@ -96,27 +96,27 @@ var _Bytes_write_string = F3(function(mb, offset, string)
 				)
 				:
 			(code < 0x800)
-				? (mb.setUint16(offset, 0b1100000010000000
-					| (code >>> 6 & 0b00011111) << 8
-					| code & 0b00111111)
+				? (mb.setUint16(offset, 0xC080 /* 0b1100000010000000 */
+					| (code >>> 6 & 0x1F /* 0b00011111 */) << 8
+					| code & 0x3F /* 0b00111111 */)
 				, 2
 				)
 				:
 			(code < 0xD800 || 0xDBFF < code)
-				? (mb.setUint16(offset, 0b1110000010000000
-					| (code >>> 12 & 0b00001111) << 8
-					| code >>> 6 & 0b00111111)
-				, mb.setUint8(offset + 2, 0b10000000
-					| code & 0b00111111)
+				? (mb.setUint16(offset, 0xE080 /* 0b1110000010000000 */
+					| (code >>> 12 & 0xF /* 0b00001111 */) << 8
+					| code >>> 6 & 0x3F /* 0b00111111 */)
+				, mb.setUint8(offset + 2, 0x80 /* 0b10000000 */
+					| code & 0x3F /* 0b00111111 */)
 				, 3
 				)
 				:
 			(code = (code - 0xD800) * 0x400 + string.charCodeAt(++i) - 0xDC00 + 0x10000
-			, mb.setUint32(offset, 0b11110000100000001000000010000000
-				| (code >>> 18 & 0b00000111) << 24
-				| (code >>> 12 & 0b00111111) << 16
-				| (code >>> 6 & 0b00111111) << 8
-				| code & 0b00111111)
+			, mb.setUint32(offset, 0xF0808080 /* 0b11110000100000001000000010000000 */
+				| (code >>> 18 & 0x7 /* 0b00000111 */) << 24
+				| (code >>> 12 & 0x3F /* 0b00111111 */) << 16
+				| (code >>> 6 & 0x3F /* 0b00111111 */) << 8
+				| code & 0x3F /* 0b00111111 */)
 			, 4
 			);
 	}
@@ -161,21 +161,21 @@ var _Bytes_read_string = F3(function(len, bytes, offset)
 			(byte < 128)
 				? String.fromCharCode(byte)
 				:
-			((byte & 0b11100000) === 0b11000000)
-				? String.fromCharCode((byte & 0b00011111) << 6 | bytes.getUint8(offset++) & 0b00111111)
+			((byte & 0xE0 /* 0b11100000 */) === 0xC0 /* 0b11000000 */)
+				? String.fromCharCode((byte & 0x1F /* 0b00011111 */) << 6 | bytes.getUint8(offset++) & 0x3F /* 0b00111111 */)
 				:
-			((byte & 0b11110000) === 0b11100000)
+			((byte & 0xF0 /* 0b11110000 */) === 0xE0 /* 0b11100000 */)
 				? String.fromCharCode(
-					(byte & 0b00001111) << 12
-					| (bytes.getUint8(offset++) & 0b00111111) << 6
-					| bytes.getUint8(offset++) & 0b00111111
+					(byte & 0xF /* 0b00001111 */) << 12
+					| (bytes.getUint8(offset++) & 0x3F /* 0b00111111 */) << 6
+					| bytes.getUint8(offset++) & 0x3F /* 0b00111111 */
 				)
 				:
 				(byte =
-					((byte & 0b00000111) << 18
-						| (bytes.getUint8(offset++) & 0b00111111) << 12
-						| (bytes.getUint8(offset++) & 0b00111111) << 6
-						| bytes.getUint8(offset++) & 0b00111111
+					((byte & 0x7 /* 0b00000111 */) << 18
+						| (bytes.getUint8(offset++) & 0x3F /* 0b00111111 */) << 12
+						| (bytes.getUint8(offset++) & 0x3F /* 0b00111111 */) << 6
+						| bytes.getUint8(offset++) & 0x3F /* 0b00111111 */
 					) - 0x10000
 				, String.fromCharCode(Math.floor(byte / 0x400) + 0xD800, byte % 0x400 + 0xDC00)
 				);
