@@ -95,7 +95,7 @@ this intermediate `Encoder` can help reduce allocation quite a lot!
 -}
 encode : Encoder -> Bytes
 encode =
-  Elm.Kernel.Bytes.runEncoder
+  Elm.Kernel.Bytes.encode
 
 
 
