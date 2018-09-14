@@ -96,7 +96,7 @@ var _Bytes_write_string = F3(function(mb, offset, string)
 				)
 				:
 			(code < 0x800)
-				? (mb.setUint16(offset, 0b1110000010000000
+				? (mb.setUint16(offset, 0b1100000010000000
 					| (code >>> 6 & 0b00011111) << 8
 					| code & 0b00111111)
 				, 2
@@ -150,38 +150,34 @@ var _Bytes_read_Bytes = F2(function(bytes, offset)
 	return __Utils_Tuple2(offset + 4 + length, new DataView(bytes, offset + 4, length));
 });
 
-var _Bytes_read_string = F2(function(bytes, offset)
+var _Bytes_read_string = F3(function(len, bytes, offset)
 {
 	var string = '';
-	var len = bytes.getUint32(offset);
-	offset += 4
-	for (; offset < len; offset++)
+	var end = offset + len;
+	for (; offset < end;)
 	{
-		var word = bytes.getUint8(offset);
+		var byte = bytes.getUint8(offset++);
 		string +=
-			(word < 128)
-				? String.fromCharCode(word)
+			(byte < 128)
+				? String.fromCharCode(byte)
 				:
-			(word & 0b11100000 == 0b11000000)
+			((byte & 0b11100000) === 0b11000000)
+				? String.fromCharCode((byte & 0b00011111) << 6 | bytes.getUint8(offset++) & 0b00111111)
+				:
+			((byte & 0b11110000) === 0b11100000)
 				? String.fromCharCode(
-					(word & 0b00011111) << 6
-					| bytes.getUint8(++offset) & 0b00111111
+					(byte & 0b00001111) << 12
+					| (bytes.getUint8(offset++) & 0b00111111) << 6
+					| bytes.getUint8(offset++) & 0b00111111
 				)
 				:
-			(word & 0b11110000 == 0b11100000)
-				? String.fromCharCode(
-					(word & 0b00001111) << 12
-					| (bytes.getUint8(++offset) & 0b00111111) << 6
-					| bytes.getUint8(++offset) & 0b00111111
-				)
-				:
-				(word =
-					((word & 0b00000111) << 18
-						| (bytes.getUint8(++offset) & 0b00111111) << 12
-						| (bytes.getUint8(++offset) & 0b00111111) << 6
-						| bytes.getUint8(++offset) & 0b00111111
+				(byte =
+					((byte & 0b00000111) << 18
+						| (bytes.getUint8(offset++) & 0b00111111) << 12
+						| (bytes.getUint8(offset++) & 0b00111111) << 6
+						| bytes.getUint8(offset++) & 0b00111111
 					) - 0x10000
-				, String.fromCharCode(Math.floor(word / 0x400) + 0xD800, word % 0x400 + 0xDC00)
+				, String.fromCharCode(Math.floor(byte / 0x400) + 0xD800, byte % 0x400 + 0xDC00)
 				);
 	}
 	return __Utils_Tuple2(offset, string);
