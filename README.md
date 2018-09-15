@@ -44,7 +44,7 @@ pointDecoder =
     (Decode.float32 BE)
 ```
 
-Rather than writing this by hand in client or sever code, the hope is that someone things like ProtoBuf compilers for Elm.
+Rather than writing this by hand in client or server code, the hope is that folks implement things like ProtoBuf compilers for Elm.
 
 Again, the overall plan is described in [**A vision for data interchange in Elm**](https://gist.github.com/evancz/1c5f2cf34939336ecb79b97bb89d9da6)!
 
