@@ -2,7 +2,7 @@
 
 Work with densely packed sequences of bytes.
 
-The goal of this package is to support **network protocols** such as ProtoBuf. Or to put it another way, the goal is to have `elm/http` and `elm/websocket` send fewer bytes over the wire.
+The goal of this package is to support **network protocols** such as ProtoBuf. Or to put it another way, the goal is to have packages like `elm/http` send fewer bytes over the wire.
 
 
 ## Motivation = [A vision for data interchange in Elm](https://gist.github.com/evancz/1c5f2cf34939336ecb79b97bb89d9da6)
