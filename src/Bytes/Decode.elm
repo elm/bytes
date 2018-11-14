@@ -403,7 +403,7 @@ repeated structures, like a list:
       if n <= 0 then
         succeed (Done xs)
       else
-        map (\x -> Step (n - 1, x :: xs)) decoder
+        map (\x -> Loop (n - 1, x :: xs)) decoder
 
 The `list` decoder first reads a 32-bit unsigned integer. That determines how
 many items will be decoded. From there we use [`loop`](#loop) to track all the
