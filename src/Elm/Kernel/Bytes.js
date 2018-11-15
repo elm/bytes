@@ -146,7 +146,7 @@ var _Bytes_read_f64 = F2(function(bytes, offset, isLE) { return __Utils_Tuple2(o
 
 var _Bytes_read_bytes = F3(function(len, bytes, offset)
 {
-	return __Utils_Tuple2(offset + len, new DataView(bytes, offset, len));
+	return __Utils_Tuple2(offset + len, new DataView(bytes.buffer, offset, len));
 });
 
 var _Bytes_read_string = F3(function(len, bytes, offset)
