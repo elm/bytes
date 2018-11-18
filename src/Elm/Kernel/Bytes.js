@@ -135,14 +135,14 @@ var _Bytes_decode = F2(function(decoder, bytes)
 	}
 });
 
-var _Bytes_read_i8  = F2(function(bytes, offset) { return __Utils_Tuple2(offset + 1, bytes.getInt8(offset)); });
-var _Bytes_read_i16 = F3(function(bytes, offset, isLE) { return __Utils_Tuple2(offset + 2, bytes.getInt16(offset, isLE)); });
-var _Bytes_read_i32 = F3(function(bytes, offset, isLE) { return __Utils_Tuple2(offset + 4, bytes.getInt32(offset, isLE)); });
-var _Bytes_read_u8  = F2(function(bytes, offset) { return __Utils_Tuple2(offset + 1, bytes.getUint8(offset)); });
-var _Bytes_read_u16 = F3(function(bytes, offset, isLE) { return __Utils_Tuple2(offset + 2, bytes.getUint16(offset, isLE)); });
-var _Bytes_read_u32 = F3(function(bytes, offset, isLE) { return __Utils_Tuple2(offset + 4, bytes.getUint32(offset, isLE)); });
-var _Bytes_read_f32 = F3(function(bytes, offset, isLE) { return __Utils_Tuple2(offset + 4, bytes.getFloat32(offset, isLE)); });
-var _Bytes_read_f64 = F3(function(bytes, offset, isLE) { return __Utils_Tuple2(offset + 8, bytes.getFloat64(offset, isLE)); });
+var _Bytes_read_i8  = F2(function(      bytes, offset) { return __Utils_Tuple2(offset + 1, bytes.getInt8(offset)); });
+var _Bytes_read_i16 = F3(function(isLE, bytes, offset) { return __Utils_Tuple2(offset + 2, bytes.getInt16(offset, isLE)); });
+var _Bytes_read_i32 = F3(function(isLE, bytes, offset) { return __Utils_Tuple2(offset + 4, bytes.getInt32(offset, isLE)); });
+var _Bytes_read_u8  = F2(function(      bytes, offset) { return __Utils_Tuple2(offset + 1, bytes.getUint8(offset)); });
+var _Bytes_read_u16 = F3(function(isLE, bytes, offset) { return __Utils_Tuple2(offset + 2, bytes.getUint16(offset, isLE)); });
+var _Bytes_read_u32 = F3(function(isLE, bytes, offset) { return __Utils_Tuple2(offset + 4, bytes.getUint32(offset, isLE)); });
+var _Bytes_read_f32 = F3(function(isLE, bytes, offset) { return __Utils_Tuple2(offset + 4, bytes.getFloat32(offset, isLE)); });
+var _Bytes_read_f64 = F3(function(isLE, bytes, offset) { return __Utils_Tuple2(offset + 8, bytes.getFloat64(offset, isLE)); });
 
 var _Bytes_read_bytes = F3(function(len, bytes, offset)
 {
