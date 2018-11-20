@@ -325,7 +325,7 @@ getWidth builder =
     F64 _ _ -> 8
     Seq w _ -> w
     Utf8 w _ -> w
-    Bytes bs -> Elm.Kernel.Bytes.width bytes
+    Bytes bs -> Elm.Kernel.Bytes.width bs
 
 
 getWidths : Int -> List Encoder -> Int
