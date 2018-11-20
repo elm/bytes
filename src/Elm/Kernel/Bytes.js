@@ -65,7 +65,7 @@ var _Bytes_write_bytes = F3(function(mb, offset, bytes)
 	{
 		mb.setUint8(offset + i, bytes.getUint8(i));
 	}
-	return offset;
+	return offset + len;
 });
 
 
