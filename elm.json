@@ -3,7 +3,7 @@
     "name": "elm/bytes",
     "summary": "Work with sequences of bytes (a.k.a. ArrayBuffer, typed arrays, DataView)",
     "license": "BSD-3-Clause",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "exposed-modules": [
         "Bytes",
         "Bytes.Encode",
